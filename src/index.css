@@ -3,3 +3,23 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
+
+table {
+  width: 20%;
+  float: left;
+  border-right: 1px solid black;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+th {
+  background: lightgrey;
+  color: black;
+}
+
+th, td{
+  padding: 10px;
+  border-right: 1px solid black;
+  border-bottom: 1px solid black;
+}
+
