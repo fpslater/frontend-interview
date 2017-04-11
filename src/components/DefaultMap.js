@@ -1,9 +1,8 @@
-import React, { PropTypes } from 'react'
+import React from 'react'
 import { withGoogleMap, GoogleMap, Marker } from "react-google-maps";
 
 const defaultZoom = 10,
       defaultCenter = { lat: 45.5231, lng: -122.6765 };
-
 
 const DefaultMap = withGoogleMap(props => (
   <GoogleMap

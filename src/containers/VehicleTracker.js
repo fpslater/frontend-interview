@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import DefaultMap from '../components/DefaultMap'
 import RoutesList from '../components/RoutesList'
 
@@ -8,13 +8,12 @@ const RTM = require("satori-sdk-js"),
       channel = "transportation",
       filter = { filter: "select * from `transportation` where header.`user-data`='trimet'"};
 
-
 class VehicleTracker extends React.Component {
   constructor(props) {
     super(props);
     this.displayedVehicles = {};
     this.state = {
-      markers: {},
+      vehicles: {},
       routes: {}
     };
   }
@@ -59,7 +58,8 @@ class VehicleTracker extends React.Component {
         lng = info.entity[0].vehicle.position.longitude,
         key = info.entity[0].vehicle.vehicle.id,
         routeID = info.entity[0].vehicle.trip ? info.entity[0].vehicle.trip.route_id : null,
-        markers = this.state.markers,
+        vehicles = this.state.vehicles,
+        display = (this.displayedVehicles[key] || !Object.keys(this.displayedVehicles).length) ? true : false,
         newVehicle = {
           position: {
               lat: lat,
@@ -68,11 +68,11 @@ class VehicleTracker extends React.Component {
             key: key,
             routeID: routeID, 
             defaultAnimation: 2,
-            display: this.displayedVehicles[key] || !Object.keys(this.displayedVehicles).length ? true : false
+            display: display
         };
 
-    markers[key] =  newVehicle;
-    this.setState({markers: markers});
+    vehicles[key] =  newVehicle;
+    this.setState({vehicles: vehicles});
   }
   
   addRoute(info) {
@@ -106,9 +106,10 @@ class VehicleTracker extends React.Component {
 
     this.displayedVehicles = this.state.routes[key].vehiclesOnRoute;
 
-    Object.keys(this.state.markers).map(function (key) {
-      let markers = this.state.markers;
-      this.displayedVehicles[key] ? markers[key].display = true : markers[key].display = false;
+    Object.keys(this.state.vehicles).map(function (key) {
+      let vehicles = this.state.vehicles;
+      this.displayedVehicles[key] ? vehicles[key].display = true : vehicles[key].display = false;
+      return true;
     }, this);
   }
 
@@ -128,7 +129,7 @@ class VehicleTracker extends React.Component {
               <div style={{ height: `100%` }} />
             }
             onMapLoad={this.handleMapLoad}
-            markers={this.state.markers}
+            markers={this.state.vehicles}
             onMarkerClick={this.handleClick}
           />
         </div>
