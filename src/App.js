@@ -106,10 +106,6 @@ class VehicleTracker extends React.Component {
     });
 
     this.rtm.start();
-    
-    setTimeout(function() {
-      _this.rtm.stop();
-    }, 3000)
   }
 
   componentWillUnmount() {
