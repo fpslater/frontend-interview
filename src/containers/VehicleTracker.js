@@ -12,6 +12,7 @@ class VehicleTracker extends React.Component {
   constructor(props) {
     super(props);
     this.displayedVehicles = {};
+    this.selectedRouteID = '';
     this.state = {
       vehicles: {},
       routes: {}
@@ -59,7 +60,7 @@ class VehicleTracker extends React.Component {
         key = info.entity[0].vehicle.vehicle.id,
         routeID = info.entity[0].vehicle.trip ? info.entity[0].vehicle.trip.route_id : null,
         vehicles = this.state.vehicles,
-        display = (this.displayedVehicles[key] || !Object.keys(this.displayedVehicles).length) ? true : false,
+        display = (routeID === this.selectedRouteID || !Object.keys(this.displayedVehicles).length) ? true : false,
         newVehicle = {
           position: {
               lat: lat,
@@ -70,7 +71,6 @@ class VehicleTracker extends React.Component {
             defaultAnimation: 2,
             display: display
         };
-
     vehicles[key] =  newVehicle;
     this.setState({vehicles: vehicles});
   }
@@ -104,12 +104,12 @@ class VehicleTracker extends React.Component {
   handleClick(param) {
     let key = typeof param === 'object' ? param.routeID : param;
 
+    this.selectedRouteID = key;
     this.displayedVehicles = this.state.routes[key].vehiclesOnRoute;
 
     Object.keys(this.state.vehicles).map(function (key) {
       let vehicles = this.state.vehicles;
       this.displayedVehicles[key] ? vehicles[key].display = true : vehicles[key].display = false;
-      return true;
     }, this);
   }
 
